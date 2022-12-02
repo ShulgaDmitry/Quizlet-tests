@@ -18,4 +18,3 @@ class HomePage(BasePage):
 
     def click_authorization_button(self):
         self.find_element(authorization_button).click()
-

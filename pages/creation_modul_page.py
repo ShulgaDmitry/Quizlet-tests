@@ -2,6 +2,9 @@ from pages.authorization_page import AuthorizationPage
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from time import sleep
 
 
 name_field = (By.XPATH, '//textarea[@tabindex="5"]')
@@ -15,7 +18,7 @@ english_button = (By.ID, 'react-select-2--option-1')
 russian_button = (By.ID, 'react-select-3--option-12')
 user_link = (By.CLASS_NAME, 'UserLink')
 delete_button = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
-confirm_delete_button = (By.CLASS_NAME, 'UIButton-wrapper')
+confirm_delete_button = (By.CSS_SELECTOR, 'button[aria-label="Да, удалить модуль"]')
 close_button = (By.CSS_SELECTOR, 'div[aria-label="Закрыть диалоговое окно"]')
 click_modul = (By.CSS_SELECTOR, 'div[data-testid="AssemblyTooltip--base"]')
 image_button = (By.CLASS_NAME, 'ImageUploadComponent')
@@ -24,6 +27,21 @@ check_image = (By.CLASS_NAME, 'ZoomableImage')
 next_card = (By.CSS_SELECTOR, 'div[aria-label="Нажмите для изучения следующей карточки"]')
 congratulation = (By.CLASS_NAME, 'hralq3g')
 come_back = (By.CLASS_NAME, 'hideBelow--m')
+select_button = (By.CSS_SELECTOR, 'svg[aria-label="режим подбора"]')
+start_game = (By.CSS_SELECTOR, 'button[aria-label="Начать игру"]')
+play_again = (By.CSS_SELECTOR, 'button[aria-label="Играть снова"]')
+back = (By.CLASS_NAME, 'ModeControls-backText')
+card_job_rus = (By.CSS_SELECTOR, 'div[aria-label="Работа"]')
+card_job = (By.CSS_SELECTOR, 'div[aria-label="Job"]')
+card_home_rus = (By.CSS_SELECTOR, 'div[aria-label="Дом"]')
+card_home = (By.CSS_SELECTOR, 'div[aria-label="Home"]')
+congratulatory_banner = (By.CLASS_NAME, 'UIModalBody')
+memorize_button = (By.CSS_SELECTOR, 'svg[aria-label="режим заучивания"]')
+skip_button = (By.CLASS_NAME, 'llulcpu')
+english_answer = (By.CLASS_NAME, 'AutoExpandTextarea-textarea')
+answer_button = (By.CLASS_NAME, 'UIButton-wrapper')
+check = (By.CSS_SELECTOR, 'svg[aria-label="check"]')
+control_word = (By.CSS_SELECTOR, 'div[style="display: block;"]')
 
 
 class CreationModulPage(AuthorizationPage):
@@ -87,8 +105,8 @@ class CreationModulPage(AuthorizationPage):
         delete = self.find_elements(delete_button)
         ActionChains(self.chrome_driver).click(delete[2]).send_keys(Keys.ARROW_UP). \
             send_keys(Keys.ENTER).perform()
-        confirm = self.find_elements(confirm_delete_button)
-        confirm[2].click()
+        yes_button = self.find_element(confirm_delete_button)
+        yes_button.click()
 
     def change_modul(self):
         change_button = self.find_elements(click_modul)
@@ -110,3 +128,39 @@ class CreationModulPage(AuthorizationPage):
         congratulations = self.find_element(congratulation)
         assert "Поздравляем! Вы повторили все карточки." in congratulations.text
         self.find_element(come_back).click()
+
+    def click_selection(self):
+        self.find_element(select_button).click()
+        self.find_element(start_game).click()
+        left_home = self.find_element(card_home_rus)
+        right_home = self.find_element(card_home)
+        ActionChains(self.chrome_driver).pause(3).drag_and_drop(left_home, right_home).perform()
+        left_job = self.find_element(card_job_rus)
+        right_job = self.find_element(card_job)
+        ActionChains(self.chrome_driver).drag_and_drop(left_job, right_job).perform()
+        assert self.find_element(congratulatory_banner).is_enabled()
+        self.find_element(play_again).click()
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(back)).click()
+
+    def click_memorization(self):
+        self.find_element(memorize_button).click()
+        self.find_element(skip_button).click()
+        first_word = self.find_element(control_word)
+        if first_word.text == "Дом":
+            self.find_element(english_answer).send_keys("Home")
+            answer = self.find_elements(answer_button)
+            answer[2].click()
+            sleep(2)
+            self.find_element(english_answer).send_keys("Job")
+            answer[2].click()
+        else:
+            self.find_element(english_answer).send_keys("Job")
+            answer = self.find_elements(answer_button)
+            answer[2].click()
+            sleep(2)
+            self.find_element(english_answer).send_keys("Home")
+            answer[2].click()
+
+        checks = self.find_elements(check)
+        assert len(checks) == 2
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(back)).click()

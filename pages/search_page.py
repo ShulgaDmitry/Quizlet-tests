@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 field_search = (By.XPATH, '//input[@id="GlobalSearchBar"]')
 learn_modul = (By.CSS_SELECTOR, 'div[data-key="Учебные модули"]')
-select_image = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
+select_image = (By.CSS_SELECTOR, 'button[aria-label="Тип учебных модулей: Все"]')
 image_symbol = (By.CLASS_NAME, 'AssemblyPillText')
 name_modul = (By.CLASS_NAME, 'SetPreviewCard-title')
 modul_card = (By.CLASS_NAME, 'SetPreviewCard-metadata')
@@ -51,8 +51,8 @@ class SearchPage(AuthorizationPage):
         search.send_keys("English")
         search.send_keys(Keys.ENTER)
         self.find_element(learn_modul).click()
-        type_modul = self.find_elements(select_image)
-        ActionChains(self.chrome_driver).click(type_modul[5]).send_keys(Keys.ARROW_DOWN). \
+        type_modul = self.find_element(select_image)
+        ActionChains(self.chrome_driver).pause(2).click(type_modul).send_keys(Keys.ARROW_DOWN). \
             send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
         images = self.find_elements(image_symbol)
         list_image = []

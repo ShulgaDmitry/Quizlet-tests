@@ -101,8 +101,7 @@ class AuthorizationPage(HomePage):
     def click_creation_modul(self):
         self.find_element(create_button).click()
         create = self.find_element(setting_button)
-        ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
-            send_keys(Keys.ARROW_UP).send_keys(Keys.ENTER).perform()
+        ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
         self.find_element(close_button).click()
 
     def click_creation_folder(self):
