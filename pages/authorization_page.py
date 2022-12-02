@@ -10,10 +10,15 @@ field_password = (By.CSS_SELECTOR, 'label[for="password"]')
 enter_button = (By.CLASS_NAME, 'UILoadingButton')
 error_message = (By.CLASS_NAME, 'lvwq407')
 avatar = (By.XPATH, '//div[@id="TopNavigationReactTarget"]/header/div/div[2]/div[4]')
-log_out_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
+setting_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
 create_button = (By.XPATH, '//*[@id="TopNavigationReactTarget"]/header/div/div[1]/div[2]/div[5]')
-choose_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
 close_button = (By.XPATH, '//div[@aria-label="Закрыть диалоговое окно"]')
+header = (By.XPATH, '//div[@id="TopNavigationReactTarget"]/header')
+field_search = (By.XPATH, '//input[@id="GlobalSearchBar"]')
+learn_modul = (By.CSS_SELECTOR, 'div[data-key="Учебные модули"]')
+select_image = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
+image_symbol = (By.CLASS_NAME, 'AssemblyPillText')
+name_modul = (By.CLASS_NAME, 'SetPreviewCard-title')
 
 
 class AuthorizationPage(HomePage):
@@ -44,6 +49,9 @@ class AuthorizationPage(HomePage):
     def enter_right_password(self):
         self.find_element(field_password).send_keys("Abcd123456")
 
+    def enter_new_password(self):
+        self.find_element(field_password).send_keys("Abcd$123456")
+
     def enter_next(self):
         self.find_element(enter_button).click()
 
@@ -57,7 +65,7 @@ class AuthorizationPage(HomePage):
 
     def log_out_account(self):
         self.find_element(avatar).click()
-        log_out = self.find_element(log_out_button)
+        log_out = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(log_out).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
             send_keys(Keys.ENTER).perform()
         try:
@@ -67,20 +75,43 @@ class AuthorizationPage(HomePage):
         else:
             return False
 
+    def change_theme(self):
+        self.find_element(avatar).click()
+        theme = self.find_element(setting_button)
+        ActionChains(self.chrome_driver).click(theme).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).\
+            send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+
+    def check_color_page(self):
+        check_header = self.find_element(header)
+        check_color = check_header.value_of_css_property("background-color")
+        return check_color == 'rgba(255, 255, 255, 1)'
+
+    def check_dark_color_page(self):
+        check_header = self.find_element(header)
+        check_color = check_header.value_of_css_property("background-color")
+        return check_color == 'rgba(10, 9, 45, 1)'
+
+    def click_setting(self):
+        self.find_element(avatar).click()
+        setting = self.find_element(setting_button)
+        ActionChains(self.chrome_driver).click(setting).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN). \
+            send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).\
+            perform()
+
     def click_creation_modul(self):
         self.find_element(create_button).click()
-        create = self.find_element(choose_button)
+        create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
             send_keys(Keys.ARROW_UP).send_keys(Keys.ENTER).perform()
         self.find_element(close_button).click()
 
     def click_creation_folder(self):
         self.find_element(create_button).click()
-        create = self.find_element(choose_button)
+        create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
             send_keys(Keys.ENTER).perform()
 
     def click_creation_course(self):
         self.find_element(create_button).click()
-        create = self.find_element(choose_button)
+        create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ENTER).perform()

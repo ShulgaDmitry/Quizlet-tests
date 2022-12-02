@@ -16,11 +16,14 @@ russian_button = (By.ID, 'react-select-3--option-12')
 user_link = (By.CLASS_NAME, 'UserLink')
 delete_button = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
 confirm_delete_button = (By.CLASS_NAME, 'UIButton-wrapper')
-close_button = (By.CSS_SELECTOR, 'div[class="UIModalHeader-closeIconButton"]')
+close_button = (By.CSS_SELECTOR, 'div[aria-label="Закрыть диалоговое окно"]')
 click_modul = (By.CSS_SELECTOR, 'div[data-testid="AssemblyTooltip--base"]')
 image_button = (By.CLASS_NAME, 'ImageUploadComponent')
 image = (By.CLASS_NAME, 'ImageCarousel-imageWrap')
 check_image = (By.CLASS_NAME, 'ZoomableImage')
+next_card = (By.CSS_SELECTOR, 'div[aria-label="Нажмите для изучения следующей карточки"]')
+congratulation = (By.CLASS_NAME, 'hralq3g')
+come_back = (By.CLASS_NAME, 'hideBelow--m')
 
 
 class CreationModulPage(AuthorizationPage):
@@ -100,3 +103,10 @@ class CreationModulPage(AuthorizationPage):
     def check_image(self):
         special_image = self.find_element(check_image)
         return special_image.is_enabled()
+
+    def click_next_card(self):
+        self.find_element(next_card).click()
+        self.find_element(next_card).click()
+        congratulations = self.find_element(congratulation)
+        assert "Поздравляем! Вы повторили все карточки." in congratulations.text
+        self.find_element(come_back).click()
