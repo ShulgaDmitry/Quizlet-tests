@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import random
 import string
 
@@ -35,6 +37,8 @@ class RegistrationPage(HomePage):
         self.click_registration_button()
 
     def reopen_page(self):
+        WebDriverWait(self.chrome_driver, 3).\
+            until(EC.url_to_be("https://quizlet.com/upgrade?source=signup&redir=https%3A%2F%2Fquizlet.com%2Fru"))
         self.open_page()
 
     def select_birth_date(self):
@@ -62,8 +66,6 @@ class RegistrationPage(HomePage):
         self.find_element(register_field_name).send_keys(name)
 
     def enter_new_password(self):
-        # letters_digits = string.ascii_letters+string.digits
-        # password = "".join(random.sample(letters_digits, 10))
         self.find_element(register_field_password).send_keys("Abcd123456")
 
     def checkbox_true(self):
@@ -94,13 +96,16 @@ class RegistrationPage(HomePage):
             return False
 
     def check_button_register(self):
+        WebDriverWait(self.chrome_driver, 3).until_not(EC.element_attribute_to_include(register_button, "disabled"))
         check_button = self.find_element(register_button)
         return check_button.is_enabled()
 
     def enter_register(self):
+        WebDriverWait(self.chrome_driver, 3).until_not(EC.element_attribute_to_include(register_button, "disabled"))
         self.find_element(register_button).click()
 
     def check_avatar(self):
+        WebDriverWait(self.chrome_driver, 3).until(EC.url_to_be("https://quizlet.com/latest"))
         avatar_logo = self.find_element(avatar)
         return avatar_logo.is_displayed()
 

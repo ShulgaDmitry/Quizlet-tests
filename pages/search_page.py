@@ -35,6 +35,7 @@ class SearchPage(AuthorizationPage):
         authorization.enter_next()
 
     def check_search(self):
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
         search.send_keys("English")
         search.send_keys(Keys.ENTER)
@@ -47,6 +48,7 @@ class SearchPage(AuthorizationPage):
             assert "English" or "ENGLISH" in each_name
 
     def check_filter(self):
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
         search.send_keys("English")
         search.send_keys(Keys.ENTER)
@@ -65,6 +67,7 @@ class SearchPage(AuthorizationPage):
         return count == 8
 
     def additions_other_modul(self):
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
         search.send_keys("English")
         search.send_keys(Keys.ENTER)

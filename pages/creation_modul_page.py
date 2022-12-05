@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
 
 
 name_field = (By.XPATH, '//textarea[@tabindex="5"]')
@@ -14,12 +13,12 @@ error_message_modul = (By.CLASS_NAME, 'UINotice-message')
 term_field = (By.XPATH, '//div[@tabindex="7"]')
 card_field = (By.XPATH, '//div[@tabindex="7"]')
 choose_language = (By.XPATH, '//button[@class="UILink is-Popover is-Tooltip UIOverlayTrigger-target"]')
-english_button = (By.ID, 'react-select-2--option-1')
-russian_button = (By.ID, 'react-select-3--option-12')
+english_button = (By.XPATH, '//div[@id="react-select-2--option-1"]')
+russian_button = (By.XPATH, '//div[@id="react-select-3--option-12"]')
 user_link = (By.CLASS_NAME, 'UserLink')
 delete_button = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
 confirm_delete_button = (By.CSS_SELECTOR, 'button[aria-label="Да, удалить модуль"]')
-close_button = (By.CSS_SELECTOR, 'div[aria-label="Закрыть диалоговое окно"]')
+close_banner_button = (By.XPATH, '//div[@aria-label="Закрыть диалоговое окно"]')
 click_modul = (By.CSS_SELECTOR, 'div[data-testid="AssemblyTooltip--base"]')
 image_button = (By.CLASS_NAME, 'ImageUploadComponent')
 image = (By.CLASS_NAME, 'ImageCarousel-imageWrap')
@@ -42,6 +41,16 @@ english_answer = (By.CLASS_NAME, 'AutoExpandTextarea-textarea')
 answer_button = (By.CLASS_NAME, 'UIButton-wrapper')
 check = (By.CSS_SELECTOR, 'svg[aria-label="check"]')
 control_word = (By.CSS_SELECTOR, 'div[style="display: block;"]')
+continue_button = (By.CSS_SELECTOR, 'button[aria-label="Продолжить"]')
+long_term_answer_home = (By.CSS_SELECTOR, 'div[aria-label="Home"]')
+long_term_answer_job = (By.CSS_SELECTOR, 'div[aria-label="Job"]')
+round_2 = (By.CSS_SELECTOR, 'button[aria-label="Перейти к раунду 2"]')
+close = (By.CSS_SELECTOR, 'button[aria-label="Назад к модулю"]')
+new_window = (By.CSS_SELECTOR, 'div[data-testid="lowKnowledge"]')
+next_answer_button = (By.CSS_SELECTOR, 'button[aria-label="Ответить"]')
+next_answer = (By.CSS_SELECTOR, 'input[aria-label="Введите ответ (язык: Английский)"]')
+cup = (By.CLASS_NAME, 'imwizko')
+bottom_banner = (By.CSS_SELECTOR, 'div[aria-live="polite"]')
 
 
 class CreationModulPage(AuthorizationPage):
@@ -64,8 +73,10 @@ class CreationModulPage(AuthorizationPage):
 
     def click_create_button(self):
         self.find_element(create_button).click()
+        WebDriverWait(self.chrome_driver, 3).until(EC.invisibility_of_element_located(create_button))
 
     def check_error_modul_message(self):
+        self.find_element(create_button).click()
         message = self.find_element(error_message_modul)
         return "НЕОБХОДИМО КАК МИНИМУМ ДВЕ КАРТОЧКИ, ЯЗЫК ТЕРМИНА И ЯЗЫК ОПРЕДЕЛЕНИЯ, ЧТОБЫ СОХРАНИТЬ МОДУЛЬ." \
                in message.text
@@ -95,7 +106,7 @@ class CreationModulPage(AuthorizationPage):
         self.find_element(russian_button).click()
 
     def close_banner(self):
-        self.find_element(close_button).click()
+        WebDriverWait(self.chrome_driver, 5).until(EC.element_to_be_clickable(close_banner_button)).click()
 
     def check_user_link(self):
         link = self.find_element(user_link)
@@ -150,17 +161,71 @@ class CreationModulPage(AuthorizationPage):
             self.find_element(english_answer).send_keys("Home")
             answer = self.find_elements(answer_button)
             answer[2].click()
-            sleep(2)
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Работа"))
             self.find_element(english_answer).send_keys("Job")
             answer[2].click()
         else:
             self.find_element(english_answer).send_keys("Job")
             answer = self.find_elements(answer_button)
             answer[2].click()
-            sleep(2)
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Дом"))
             self.find_element(english_answer).send_keys("Home")
             answer[2].click()
 
         checks = self.find_elements(check)
         assert len(checks) == 2
         WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(back)).click()
+
+    def click_long_term_memorization_round_1(self):
+        self.find_element(memorize_button).click()
+        self.find_element(continue_button).click()
+        WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
+        self.find_element(continue_button).click()
+        first_word = self.find_element(control_word)
+        if first_word.text == "Дом":
+            self.find_element(long_term_answer_home).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Работа"))
+            self.find_element(long_term_answer_job).click()
+        else:
+            self.find_element(long_term_answer_job).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Дом"))
+            self.find_element(long_term_answer_home).click()
+
+        banner = self.find_element(bottom_banner)
+        assert banner.is_enabled()
+        self.find_element(close).click()
+
+    def click_long_term_memorization_round_2(self):
+        self.find_element(memorize_button).click()
+        self.find_element(continue_button).click()
+        WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
+        self.find_element(continue_button).click()
+        first_word = self.find_element(control_word)
+        if first_word.text == "Дом":
+            self.find_element(long_term_answer_home).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Работа"))
+            self.find_element(long_term_answer_job).click()
+        else:
+            self.find_element(long_term_answer_job).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Дом"))
+            self.find_element(long_term_answer_home).click()
+
+        next_round = self.find_elements(round_2)
+        next_round[1].click()
+        first_word = self.find_element(control_word)
+        if first_word.text == "Дом":
+            self.find_element(next_answer).send_keys("Home")
+            self.find_element(next_answer_button).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Работа"))
+            self.find_element(next_answer).send_keys("Job")
+            self.find_element(next_answer_button).click()
+        else:
+            self.find_element(next_answer).send_keys("Job")
+            self.find_element(next_answer_button).click()
+            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Дом"))
+            self.find_element(next_answer).send_keys("Home")
+            self.find_element(next_answer_button).click()
+
+        cup_image = self.find_element(cup)
+        assert cup_image.is_enabled()
+        self.find_element(close).click()

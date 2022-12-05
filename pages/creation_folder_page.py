@@ -19,6 +19,8 @@ avatar = (By.XPATH, '//div[@id="TopNavigationReactTarget"]/header/div/div[2]/div
 profile_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
 folders_button = (By.CSS_SELECTOR, 'div[data-key="PROFILE_TABS.FOLDERS"]')
 our_folder = (By.CSS_SELECTOR, 'a[aria-label="Test"]')
+check_banner = (By.CSS_SELECTOR, 'img[alt="Нет папок в библиотеке"]')
+main = (By.CSS_SELECTOR, 'a[href="/latest"]')
 
 
 class CreationFolderPage(AuthorizationPage):
@@ -53,9 +55,15 @@ class CreationFolderPage(AuthorizationPage):
         choose_delete.click()
         self.find_element(confirm_delete_button).click()
 
-    def check_url_delete_folder(self):
-        delete_url = self.chrome_driver.current_url
-        return "https://quizlet.com/latest" in delete_url
+    def check_delete_folder(self):
+        WebDriverWait(self.chrome_driver, 3).until(EC.url_to_be("https://quizlet.com/latest"))
+        self.find_element(avatar).click()
+        profile = self.find_element(profile_button)
+        ActionChains(self.chrome_driver).click(profile).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN). \
+            send_keys(Keys.ENTER).perform()
+        self.find_element(folders_button).click()
+        banner = self.find_element(check_banner)
+        return banner.is_enabled()
 
     def addition_modul(self):
         self.find_element(add_modul).click()
@@ -69,6 +77,8 @@ class CreationFolderPage(AuthorizationPage):
         self.find_element(close_button).click()
 
     def open_profile(self):
+        self.find_element(main).click()
+        WebDriverWait(self.chrome_driver, 3).until(EC.url_to_be("https://quizlet.com/latest"))
         self.find_element(avatar).click()
         profile = self.find_element(profile_button)
         ActionChains(self.chrome_driver).click(profile).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).\

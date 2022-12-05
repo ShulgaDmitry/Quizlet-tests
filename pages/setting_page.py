@@ -1,7 +1,8 @@
 from pages.authorization_page import AuthorizationPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-from time import sleep
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 new_avatar = (By.CSS_SELECTOR, 'a[href="/settings/change-image/45"]')
@@ -30,6 +31,7 @@ class SettingPage(AuthorizationPage):
 
     def open_setting_page_with_new_password(self):
         authorization = AuthorizationPage(self.chrome_driver)
+        authorization.open_page()
         authorization.log_out_account()
         authorization.open_authorization_page()
         authorization.enter_right_email()
@@ -39,15 +41,17 @@ class SettingPage(AuthorizationPage):
 
     def change_avatar(self):
         self.find_element(new_avatar).click()
-        new = self.find_elements(place_avatar)
-        sleep(2)
-        new_image = new[0].get_attribute("src")
+        WebDriverWait(self.chrome_driver, 5).until(EC.text_to_be_present_in_element_attribute(new_avatar, 'class',
+                                                                                              'animal selected'))
+        new = self.find_element(place_avatar)
+        new_image = new.get_attribute("src")
         return 'https://assets.quizlet.com/a/j/dist/app/i/animals/45.069bd0ea8329543.jpg' in new_image
 
     def return_avatar(self):
         self.find_element(old_avatar).click()
+        WebDriverWait(self.chrome_driver, 5).until(EC.text_to_be_present_in_element_attribute(old_avatar, 'class',
+                                                                                              'animal selected'))
         new = self.find_elements(place_avatar)
-        sleep(2)
         old_image = new[0].get_attribute("src")
         return 'https://assets.quizlet.com/a/j/dist/app/i/animals/16.a97172ddb231185.jpg' in old_image
 

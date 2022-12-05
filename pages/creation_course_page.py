@@ -5,12 +5,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 
 
 name_field = (By.ID, 'CreateClassModal-class-name')
 description_field = (By.CSS_SELECTOR, 'label[for="CreateClassModal-class-description"]')
 education_field = (By.CSS_SELECTOR, 'input[aria-label="Введите название своего учебного заведения"]')
-choose_educational_institution = (By.ID, 'react-autowhatever-1--item-0')
+educational_institution = (By.CLASS_NAME, 'st2khe')
 create_button = (By.CSS_SELECTOR, 'button[aria-label="Создать курс"]')
 add_education = (By.CSS_SELECTOR, 'button[aria-label="+ Добавить"]')
 country = (By.CSS_SELECTOR, 'select[class="d15dqdef"]')
@@ -19,6 +20,10 @@ setting_button = (By.CLASS_NAME, 'MenuIconWithTooltip')
 delete_button = (By.CSS_SELECTOR, 'svg[aria-label="delete"]')
 confirm_delete_button = (By.CSS_SELECTOR, 'button[class="UIButton UIButton--alert UIButton--fill UIButton--hero"]')
 close = (By.CLASS_NAME, 'r1lhaaik')
+avatar = (By.XPATH, '//div[@id="TopNavigationReactTarget"]/header/div/div[2]/div[4]')
+profile_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
+courses_button = (By.CSS_SELECTOR, 'div[data-key="PROFILE_TABS.CLASSES"]')
+check_banner = (By.CSS_SELECTOR, 'img[alt="Нет курсов в библиотеке"]')
 
 
 class CreationCoursePage(AuthorizationPage):
@@ -49,10 +54,12 @@ class CreationCoursePage(AuthorizationPage):
         else:
             close_button.click()
 
-        WebDriverWait(self.chrome_driver, 2).until(EC.element_to_be_clickable(education_field)).send_keys("БНТУ")
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys("БНТУ")
 
     def choose_education(self):
-        education = self.find_elements(choose_educational_institution)
+        WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(educational_institution,
+                                                                                    "БНТУ(ПОЛИТЕХ)"))
+        education = self.find_elements(educational_institution)
         education[0].click()
 
     def enter_new_educational_institution(self):
@@ -65,7 +72,7 @@ class CreationCoursePage(AuthorizationPage):
         else:
             close_button.click()
 
-        WebDriverWait(self.chrome_driver, 2).until(EC.element_to_be_clickable(education_field)).send_keys("Test")
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys("Test")
         self.window_scroll()
         self.find_element(add_education).click()
         select_country = self.find_elements(country)
@@ -86,6 +93,12 @@ class CreationCoursePage(AuthorizationPage):
         WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(delete_button)).click()
         self.find_element(confirm_delete_button).click()
 
-    def check_url_delete_course(self):
-        delete_url = self.chrome_driver.current_url
-        return "https://quizlet.com/latest" in delete_url
+    def check_delete_course(self):
+        WebDriverWait(self.chrome_driver, 3).until(EC.url_to_be("https://quizlet.com/latest"))
+        self.find_element(avatar).click()
+        profile = self.find_element(profile_button)
+        ActionChains(self.chrome_driver).click(profile).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).\
+            send_keys(Keys.ENTER).perform()
+        self.find_element(courses_button).click()
+        banner = self.find_element(check_banner)
+        return banner.is_enabled()
