@@ -16,7 +16,7 @@ exercise = (By.CSS_SELECTOR, 'a[href="https://quizlet.com/explanations/textbook-
                              'chapter-1-exercises-1-e41a24af-c7db-4502-a282-b71d7cfcd7bc"')
 
 
-class SolutionExpertsPage(AuthorizationPage):
+class ExpertDecisionPage(AuthorizationPage):
     def __init__(self, chrome_driver):
         super().__init__(chrome_driver)
 

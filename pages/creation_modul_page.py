@@ -18,7 +18,7 @@ russian_button = (By.XPATH, '//div[@id="react-select-3--option-12"]')
 user_link = (By.CLASS_NAME, 'UserLink')
 delete_button = (By.CSS_SELECTOR, 'div[data-overlay-container="true"]')
 confirm_delete_button = (By.CSS_SELECTOR, 'button[aria-label="Да, удалить модуль"]')
-close_banner_button = (By.XPATH, '//div[@aria-label="Закрыть диалоговое окно"]')
+close_banner_button = (By.CSS_SELECTOR, 'div[aria-label="Закрыть диалоговое окно"]')
 click_modul = (By.CSS_SELECTOR, 'div[data-testid="AssemblyTooltip--base"]')
 image_button = (By.CLASS_NAME, 'ImageUploadComponent')
 image = (By.CLASS_NAME, 'ImageCarousel-imageWrap')
@@ -99,14 +99,14 @@ class CreationModulPage(AuthorizationPage):
 
     def choose_language_1(self):
         self.find_element(choose_language).click()
-        self.find_element(english_button).click()
+        WebDriverWait(self.chrome_driver, 5).until(EC.presence_of_element_located(english_button)).click()
 
     def choose_language_2(self):
         self.find_element(choose_language).click()
-        self.find_element(russian_button).click()
+        WebDriverWait(self.chrome_driver, 5).until(EC.presence_of_element_located(russian_button)).click()
 
     def close_banner(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.element_to_be_clickable(close_banner_button)).click()
+        WebDriverWait(self.chrome_driver, 8).until(EC.element_to_be_clickable(close_banner_button)).click()
 
     def check_user_link(self):
         link = self.find_element(user_link)

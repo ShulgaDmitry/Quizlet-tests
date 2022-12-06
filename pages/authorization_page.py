@@ -94,6 +94,7 @@ class AuthorizationPage(HomePage):
         theme = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(theme).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).\
             send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
 
     def check_color_page(self):
         WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))

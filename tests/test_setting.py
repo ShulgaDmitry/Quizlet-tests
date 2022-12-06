@@ -15,6 +15,12 @@ def test_change_language(chrome_driver):
     assert setting.return_language() is True
 
 
+def test_change_role(chrome_driver):
+    setting = SettingPage(chrome_driver)
+    setting.open_setting_page()
+    setting.change_role()
+
+
 def test_change_password(chrome_driver):
     setting = SettingPage(chrome_driver)
     setting.open_setting_page()
@@ -22,8 +28,3 @@ def test_change_password(chrome_driver):
     setting.open_setting_page_with_new_password()
     assert setting.return_password() is True
 
-
-def test_change_role(chrome_driver):
-    setting = SettingPage(chrome_driver)
-    setting.open_setting_page()
-    setting.change_role()
