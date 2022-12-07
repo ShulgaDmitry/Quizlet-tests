@@ -26,6 +26,7 @@ continue_button = (By.CLASS_NAME, 'UIButton-wrapper')
 delete_account_button = (By.CLASS_NAME, 'UIButton-wrapper')
 checkbox_adult = (By.CSS_SELECTOR, 'input[name="is_parent"]')
 checkbox_teacher = (By.CSS_SELECTOR, 'input[name="is_free_teacher"]')
+return_main_page = (By.CSS_SELECTOR, 'a[href="/ru"]')
 
 
 class RegistrationPage(HomePage):
@@ -37,7 +38,7 @@ class RegistrationPage(HomePage):
         self.click_registration_button()
 
     def reopen_page(self):
-        WebDriverWait(self.chrome_driver, 3).\
+        WebDriverWait(self.chrome_driver, 5).\
             until(EC.url_to_be("https://quizlet.com/upgrade?source=signup&redir=https%3A%2F%2Fquizlet.com%2Fru"))
         self.open_page()
 
@@ -96,16 +97,16 @@ class RegistrationPage(HomePage):
             return False
 
     def check_button_register(self):
-        WebDriverWait(self.chrome_driver, 3).until_not(EC.element_attribute_to_include(register_button, "disabled"))
+        WebDriverWait(self.chrome_driver, 5).until_not(EC.element_attribute_to_include(register_button, "disabled"))
         check_button = self.find_element(register_button)
         return check_button.is_enabled()
 
     def enter_register(self):
-        WebDriverWait(self.chrome_driver, 3).until_not(EC.element_attribute_to_include(register_button, "disabled"))
+        WebDriverWait(self.chrome_driver, 5).until_not(EC.element_attribute_to_include(register_button, "disabled"))
         self.find_element(register_button).click()
 
     def check_avatar(self):
-        WebDriverWait(self.chrome_driver, 3).until(EC.url_to_be("https://quizlet.com/latest"))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         avatar_logo = self.find_element(avatar)
         return avatar_logo.is_displayed()
 
@@ -122,3 +123,13 @@ class RegistrationPage(HomePage):
         self.find_element(delete_field_password).send_keys("Abcd123456")
         self.find_element(continue_button).click()
         self.find_element(delete_account_button).click()
+
+    def check_account_deletion(self):
+        self.window_scroll()
+        self.find_element(delete_button).click()
+        self.find_element(delete_field_password).send_keys("Abcd123456")
+        self.find_element(continue_button).click()
+        self.find_element(delete_account_button).click()
+        self.find_element(return_main_page).click()
+        home_url = self.chrome_driver.current_url
+        return "https://quizlet.com/ru" in home_url

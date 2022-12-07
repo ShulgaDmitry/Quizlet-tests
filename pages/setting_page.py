@@ -1,3 +1,4 @@
+from selenium.common import NoSuchElementException
 from pages.authorization_page import AuthorizationPage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -15,6 +16,7 @@ field_old_password = (By.CSS_SELECTOR, 'input[name="old_password"]')
 field_new_password = (By.CSS_SELECTOR, 'input[name="new_password"]')
 field_confirm_new_password = (By.CSS_SELECTOR, 'input[name="new_password_conf"]')
 radiobutton = (By.CLASS_NAME, 'UIRadio')
+error_password = (By. CLASS_NAME, 'lvwq407')
 
 
 class SettingPage(AuthorizationPage):
@@ -27,13 +29,26 @@ class SettingPage(AuthorizationPage):
         authorization.enter_right_email()
         authorization.enter_right_password()
         authorization.enter_next()
-        authorization.click_setting()
+        try:
+            self.find_element(error_password).is_enabled()
+        except NoSuchElementException:
+            authorization.click_setting()
+        else:
+            authorization.clear_password()
+            authorization.enter_new_password()
+            authorization.enter_next()
+            authorization.click_setting()
+            self.find_element(field_old_password).send_keys("Abcd$123456")
+            self.find_element(field_new_password).send_keys("Abcd123456")
+            self.find_element(field_confirm_new_password).send_keys("Abcd123456")
+            change_password = self.find_elements(change_button)
+            change_password[3].click()
 
     def open_setting_page_with_new_password(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_page()
         authorization.log_out_account()
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/goodbye"))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains("https://quizlet.com/goodbye"))
         authorization.click_authorization_button()
         authorization.enter_right_email()
         authorization.enter_new_password()

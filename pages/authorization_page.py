@@ -11,7 +11,7 @@ field_email = (By.CSS_SELECTOR, 'label[for="username"]')
 field_password = (By.CSS_SELECTOR, 'label[for="password"]')
 enter_button = (By.CLASS_NAME, 'UILoadingButton')
 error_message = (By.CLASS_NAME, 'lvwq407')
-avatar = (By.XPATH, '//div[@id="TopNavigationReactTarget"]/header/div/div[2]/div[4]')
+avatar = (By.XPATH, '//div[@class="SiteAvatar TopNavigationItem"]/div[@data-overlay-container="true"]')
 setting_button = (By.XPATH, '//div[@ data-overlay-container="true"]')
 create_button = (By.XPATH, '//*[@id="TopNavigationReactTarget"]/header/div/div[1]/div[2]/div[5]')
 close_button = (By.XPATH, '//div[@aria-label="Закрыть диалоговое окно"]')
@@ -27,6 +27,7 @@ choose_book = (By.CSS_SELECTOR, 'a[aria-label="Advanced Engineering Mathematics,
 chapter_1 = (By.CSS_SELECTOR, 'button[aria-label="Глава 1"]')
 chapter_1_1 = (By.CSS_SELECTOR, 'button[aria-label="Раздел 1.1: Basic Concepts. Modeling"]')
 all_steps_button = (By.CSS_SELECTOR, 'button[aria-label="Показать все шаги"]')
+subscription_button = (By.CSS_SELECTOR, 'a[href="/upgrade?source=header_plus&redir=%2Flatest"]')
 exercise = (By.CSS_SELECTOR, 'a[href="https://quizlet.com/explanations/textbook-solutions/'
                              'advanced-engineering-mathematics-10th-edition-9780470458365/'
                              'chapter-1-exercises-1-e41a24af-c7db-4502-a282-b71d7cfcd7bc"')
@@ -71,12 +72,12 @@ class AuthorizationPage(HomePage):
         return "ВЫ ВВЕЛИ НЕВЕРНЫЕ ДАННЫЕ ДЛЯ ВХОДА. ПОВТОРИТЕ ПОПЫТКУ." in message.text
 
     def check_avatar(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         check_avatar = self.find_element(avatar)
         return check_avatar.is_displayed()
 
     def log_out_account(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(avatar).click()
         log_out = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(log_out).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
@@ -89,7 +90,7 @@ class AuthorizationPage(HomePage):
             return False
 
     def change_theme(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(avatar).click()
         theme = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(theme).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN).\
@@ -97,19 +98,25 @@ class AuthorizationPage(HomePage):
         WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
 
     def check_color_page(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         check_header = self.find_element(header)
         check_color = check_header.value_of_css_property("background-color")
         return check_color == 'rgba(255, 255, 255, 1)'
 
     def check_dark_color_page(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         check_header = self.find_element(header)
         check_color = check_header.value_of_css_property("background-color")
         return check_color == 'rgba(10, 9, 45, 1)'
 
+    def check_subscription_page(self):
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
+        self.find_element(subscription_button).click()
+        subscription = self.chrome_driver.current_url
+        return "https://quizlet.com/upgrade?source=header_plus&redir=%2Flatest" in subscription
+
     def click_setting(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(avatar).click()
         setting = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(setting).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ARROW_DOWN). \
@@ -117,25 +124,25 @@ class AuthorizationPage(HomePage):
             perform()
 
     def click_solutions_experts(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(solutions_experts).click()
 
     def click_creation_modul(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(create_button).click()
         create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
         self.find_element(close_button).click()
 
     def click_creation_folder(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(create_button).click()
         create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ARROW_UP).\
             send_keys(Keys.ENTER).perform()
 
     def click_creation_course(self):
-        WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be('https://quizlet.com/latest'))
+        WebDriverWait(self.chrome_driver, 5).until(EC.url_contains('https://quizlet.com/latest'))
         self.find_element(create_button).click()
         create = self.find_element(setting_button)
         ActionChains(self.chrome_driver).click(create).send_keys(Keys.ARROW_UP).send_keys(Keys.ENTER).perform()
