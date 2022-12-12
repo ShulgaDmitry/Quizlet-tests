@@ -9,7 +9,7 @@ def test_search(chrome_driver):
     with allure.step("Open main page"):
         search.open_search_page()
     with allure.step("Check search by word english "):
-        search.check_search()
+        search.check_search(search_phrase="English")
 
 
 @allure.feature("Search field")
@@ -19,7 +19,7 @@ def test_filters_search(chrome_driver):
     with allure.step("Open main page"):
         search.open_search_page()
     with allure.step("Check search by filter 'with image'"):
-        assert search.check_filter() is True
+        assert search.check_filter(search_phrase="English") is True
 
 
 @allure.feature("Search field")
@@ -29,6 +29,6 @@ def test_additions_other_modul(chrome_driver):
     with allure.step("Open main page"):
         search.open_search_page()
     with allure.step("Check addition other modul in folder"):
-        assert search.additions_other_modul() is True
+        assert search.additions_other_modul(search_phrase="English", folder_name="Test") is True
     search.delete_folder()
 

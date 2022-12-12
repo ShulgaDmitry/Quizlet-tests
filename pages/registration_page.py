@@ -58,16 +58,16 @@ class RegistrationPage(HomePage):
         select_year = Select(self.find_element(birth_year))
         select_year.select_by_visible_text("2003")
 
-    def enter_new_email(self):
-        self.find_element(register_field_email).send_keys("aapbyw@mailto.plus")
+    def enter_new_email(self, email):
+        self.find_element(register_field_email).send_keys(email)
 
     def enter_new_name(self):
         letters = string.ascii_letters
         name = "".join(random.sample(letters, 10))
         self.find_element(register_field_name).send_keys(name)
 
-    def enter_new_password(self):
-        self.find_element(register_field_password).send_keys("Abcd123456")
+    def enter_new_password(self, password):
+        self.find_element(register_field_password).send_keys(password)
 
     def checkbox_true(self):
         self.find_element(checkbox).click()

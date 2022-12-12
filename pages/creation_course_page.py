@@ -33,18 +33,18 @@ class CreationCoursePage(AuthorizationPage):
     def open_creation_course_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
         authorization.click_creation_course()
 
-    def enter_name_field(self):
-        self.find_element(name_field).send_keys("Test")
+    def enter_name_field(self, name):
+        self.find_element(name_field).send_keys(name)
 
-    def enter_description_field(self):
-        self.find_element(description_field).send_keys("Testing")
+    def enter_description_field(self, description):
+        self.find_element(description_field).send_keys(description)
 
-    def enter_educational_institution(self):
+    def enter_educational_institution(self, education):
         try:
             close_button = self.find_element(close)
 
@@ -54,7 +54,7 @@ class CreationCoursePage(AuthorizationPage):
         else:
             close_button.click()
 
-        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys("БНТУ")
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys(education)
 
     def choose_education(self):
         WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(educational_institution,
@@ -62,7 +62,7 @@ class CreationCoursePage(AuthorizationPage):
         education = self.find_elements(educational_institution)
         education[0].click()
 
-    def enter_new_educational_institution(self):
+    def enter_new_educational_institution(self, new_education):
         try:
             close_button = self.find_element(close)
 
@@ -72,7 +72,7 @@ class CreationCoursePage(AuthorizationPage):
         else:
             close_button.click()
 
-        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys("Test")
+        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(education_field)).send_keys(new_education)
         self.window_scroll()
         self.find_element(add_education).click()
         select_country = self.find_elements(country)

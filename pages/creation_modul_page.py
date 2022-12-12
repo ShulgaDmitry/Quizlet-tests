@@ -29,17 +29,18 @@ come_back = (By.CLASS_NAME, 'hideBelow--m')
 select_button = (By.CSS_SELECTOR, 'svg[aria-label="режим подбора"]')
 start_game = (By.CSS_SELECTOR, 'button[aria-label="Начать игру"]')
 play_again = (By.CSS_SELECTOR, 'button[aria-label="Играть снова"]')
-back = (By.CLASS_NAME, 'ModeControls-backText')
+back = (By.CSS_SELECTOR, 'a[data-testid="UILink-anchor"]')
 card_job_rus = (By.CSS_SELECTOR, 'div[aria-label="Работа"]')
 card_job = (By.CSS_SELECTOR, 'div[aria-label="Job"]')
 card_home_rus = (By.CSS_SELECTOR, 'div[aria-label="Дом"]')
 card_home = (By.CSS_SELECTOR, 'div[aria-label="Home"]')
 congratulatory_banner = (By.CLASS_NAME, 'UIModalBody')
 memorize_button = (By.CSS_SELECTOR, 'svg[aria-label="режим заучивания"]')
-skip_button = (By.CLASS_NAME, 'llulcpu')
-english_answer = (By.CLASS_NAME, 'AutoExpandTextarea-textarea')
-answer_button = (By.CLASS_NAME, 'UIButton-wrapper')
-check = (By.CSS_SELECTOR, 'svg[aria-label="check"]')
+test_button = (By.CSS_SELECTOR, 'svg[aria-label="режим тестирования"]')
+english_answer = (By.CSS_SELECTOR, 'input[aria-label="Введите ответ (язык: Английский)"]')
+answer_button = (By.CSS_SELECTOR, 'button[aria-label="Далее"]')
+send_answer_button = (By.CSS_SELECTOR, 'button[aria-label="Отправить тест"]')
+check = (By.CSS_SELECTOR, 'div[data-testid="primary-count"]')
 control_word = (By.CSS_SELECTOR, 'div[style="display: block;"]')
 continue_button = (By.CSS_SELECTOR, 'button[aria-label="Продолжить"]')
 long_term_answer_home = (By.CSS_SELECTOR, 'div[aria-label="Home"]')
@@ -51,6 +52,7 @@ next_answer_button = (By.CSS_SELECTOR, 'button[aria-label="Ответить"]')
 next_answer = (By.CSS_SELECTOR, 'input[aria-label="Введите ответ (язык: Английский)"]')
 cup = (By.CLASS_NAME, 'imwizko')
 bottom_banner = (By.CSS_SELECTOR, 'div[aria-live="polite"]')
+close_test = (By.CSS_SELECTOR, 'button[aria-label="Назад"]')
 
 
 class CreationModulPage(AuthorizationPage):
@@ -60,16 +62,16 @@ class CreationModulPage(AuthorizationPage):
     def open_creation_modul_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
         authorization.click_creation_modul()
 
-    def enter_name_field(self):
-        self.find_element(name_field).send_keys("Test")
+    def enter_name_field(self, name):
+        self.find_element(name_field).send_keys(name)
 
-    def enter_description_field(self):
-        self.find_element(description_field).send_keys("Testing")
+    def enter_description_field(self, description):
+        self.find_element(description_field).send_keys(description)
 
     def click_create_button(self):
         self.find_element(create_button).click()
@@ -81,21 +83,21 @@ class CreationModulPage(AuthorizationPage):
         return "НЕОБХОДИМО КАК МИНИМУМ ДВЕ КАРТОЧКИ, ЯЗЫК ТЕРМИНА И ЯЗЫК ОПРЕДЕЛЕНИЯ, ЧТОБЫ СОХРАНИТЬ МОДУЛЬ." \
                in message.text
 
-    def enter_term_field_1(self):
+    def enter_term_field_1(self, first_word):
         term = self.find_elements(card_field)
-        term[0].send_keys("Home")
+        term[0].send_keys(first_word)
 
-    def enter_term_field_2(self):
+    def enter_term_field_2(self, third_word):
         term = self.find_elements(card_field)
-        term[2].send_keys("Job")
+        term[2].send_keys(third_word)
 
-    def enter_definition_field_1(self):
+    def enter_definition_field_1(self, second_word):
         definition = self.find_elements(card_field)
-        definition[1].send_keys("Дом")
+        definition[1].send_keys(second_word)
 
-    def enter_definition_field_2(self):
+    def enter_definition_field_2(self, fourth_word):
         definition = self.find_elements(card_field)
-        definition[3].send_keys("Работа")
+        definition[3].send_keys(fourth_word)
 
     def choose_language_1(self):
         self.find_element(choose_language).click()
@@ -154,33 +156,33 @@ class CreationModulPage(AuthorizationPage):
         WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(back)).click()
 
     def click_memorization(self):
-        self.find_element(memorize_button).click()
-        self.find_element(skip_button).click()
-        first_word = self.find_element(control_word)
-        if first_word.text == "Дом":
-            self.find_element(english_answer).send_keys("Home")
-            answer = self.find_elements(answer_button)
-            answer[2].click()
-            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Работа"))
-            self.find_element(english_answer).send_keys("Job")
-            answer[2].click()
+        self.find_element(test_button).click()
+        first_word = self.find_elements(control_word)
+        if first_word[0].text == "Дом":
+            first = self.find_elements(english_answer)
+            first[0].send_keys("Home")
+            self.find_element(answer_button).click()
+            second = self.find_elements(english_answer)
+            second[1].send_keys("Job")
+            self.find_element(send_answer_button).click()
         else:
-            self.find_element(english_answer).send_keys("Job")
-            answer = self.find_elements(answer_button)
-            answer[2].click()
-            WebDriverWait(self.chrome_driver, 3).until(EC.text_to_be_present_in_element(control_word, "Дом"))
-            self.find_element(english_answer).send_keys("Home")
-            answer[2].click()
+            second = self.find_elements(english_answer)
+            second[0].send_keys("Job")
+            self.find_element(answer_button).click()
+            first = self.find_elements(english_answer)
+            first[1].send_keys("Home")
+            self.find_element(send_answer_button).click()
 
-        checks = self.find_elements(check)
-        assert len(checks) == 2
-        WebDriverWait(self.chrome_driver, 3).until(EC.element_to_be_clickable(back)).click()
+        WebDriverWait(self.chrome_driver, 5).until(EC.presence_of_element_located(check))
+        checks = self.find_element(check)
+        assert "2" == checks.text
+        self.find_element(close_test).click()
 
     def click_long_term_memorization_round_1(self):
         self.find_element(memorize_button).click()
-        self.find_element(continue_button).click()
-        WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
-        self.find_element(continue_button).click()
+        #self.find_element(continue_button).click()
+        # WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
+        # self.find_element(continue_button).click()
         first_word = self.find_element(control_word)
         if first_word.text == "Дом":
             self.find_element(long_term_answer_home).click()
@@ -197,9 +199,9 @@ class CreationModulPage(AuthorizationPage):
 
     def click_long_term_memorization_round_2(self):
         self.find_element(memorize_button).click()
-        self.find_element(continue_button).click()
-        WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
-        self.find_element(continue_button).click()
+        # self.find_element(continue_button).click()
+        # WebDriverWait(self.chrome_driver, 3).until(EC.presence_of_element_located(new_window))
+        # self.find_element(continue_button).click()
         first_word = self.find_element(control_word)
         if first_word.text == "Дом":
             self.find_element(long_term_answer_home).click()

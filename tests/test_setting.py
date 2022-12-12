@@ -43,7 +43,7 @@ def test_change_password(chrome_driver):
     with allure.step("Open main page"):
         setting.open_setting_page()
     with allure.step("Check that password changed"):
-        assert setting.change_password() is True
+        assert setting.change_password(old_password="Abcd123456", new_password="Abcd$123456") is True
     with allure.step("Check log in with new password"):
         setting.open_setting_page_with_new_password()
     assert setting.return_password() is True

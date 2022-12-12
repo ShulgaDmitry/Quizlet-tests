@@ -30,16 +30,16 @@ class CreationFolderPage(AuthorizationPage):
     def open_creation_folder_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
         authorization.click_creation_folder()
 
-    def enter_name_field(self):
-        self.find_element(name_field).send_keys("Test")
+    def enter_name_field(self, name):
+        self.find_element(name_field).send_keys(name)
 
-    def enter_description_field(self):
-        self.find_element(description_field).send_keys("Testing")
+    def enter_description_field(self, description):
+        self.find_element(description_field).send_keys(description)
 
     def check_create_button(self):
         create = self.find_element(create_button)

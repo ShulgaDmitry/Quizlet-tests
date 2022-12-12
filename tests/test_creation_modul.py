@@ -9,9 +9,9 @@ def test_error_creation_modul(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Check that error message is enabled"):
         assert creation.check_error_modul_message()
 
@@ -23,21 +23,21 @@ def test_creation_modul(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()
@@ -53,21 +53,21 @@ def test_creation_image_modul(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()
@@ -89,21 +89,21 @@ def test_pass_test(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     with allure.step("Banner with congratulations is enabled"):
@@ -119,21 +119,21 @@ def test_selection_game(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()
@@ -149,21 +149,21 @@ def test_writing_memorization(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()
@@ -177,21 +177,21 @@ def test_long_term_memorization_round_1(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()
@@ -205,21 +205,21 @@ def test_long_term_memorization_round_2(chrome_driver):
     with allure.step("Create modul"):
         creation.open_creation_modul_page()
     with allure.step("Enter name modul"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description modul"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Enter first word"):
-        creation.enter_term_field_1()
+        creation.enter_term_field_1(first_word="Home")
     with allure.step("Choose language of first word"):
         creation.choose_language_1()
     with allure.step("Enter second word"):
-        creation.enter_definition_field_1()
+        creation.enter_definition_field_1(second_word="Дом")
     with allure.step("Choose language of second word"):
         creation.choose_language_2()
     with allure.step("Enter third word"):
-        creation.enter_term_field_2()
+        creation.enter_term_field_2(third_word="Job")
     with allure.step("Enter fourth word"):
-        creation.enter_definition_field_2()
+        creation.enter_definition_field_2(fourth_word="Работа")
     with allure.step("Click creation button"):
         creation.click_create_button()
     creation.close_banner()

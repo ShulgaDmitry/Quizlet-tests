@@ -41,28 +41,28 @@ class AuthorizationPage(HomePage):
         self.open_page()
         self.click_authorization_button()
 
-    def enter_error_email(self):
-        self.find_element(field_email).send_keys("Some_email@mail.com")
+    def enter_error_email(self, error_email):
+        self.find_element(field_email).send_keys(error_email)
 
     def clear_email(self):
         self.find_element(field_email).send_keys(Keys.CONTROL + "a")
         self.find_element(field_email).send_keys(Keys.DELETE)
 
-    def enter_right_email(self):
-        self.find_element(field_email).send_keys("ekocm@mailto.plus")
+    def enter_right_email(self, right_email):
+        self.find_element(field_email).send_keys(right_email)
 
-    def enter_error_password(self):
-        self.find_element(field_password).send_keys("1234")
+    def enter_error_password(self, error_password):
+        self.find_element(field_password).send_keys(error_password)
 
     def clear_password(self):
         self.find_element(field_password).send_keys(Keys.CONTROL + "a")
         self.find_element(field_password).send_keys(Keys.DELETE)
 
-    def enter_right_password(self):
-        self.find_element(field_password).send_keys("Abcd123456")
+    def enter_right_password(self, right_password):
+        self.find_element(field_password).send_keys(right_password)
 
-    def enter_new_password(self):
-        self.find_element(field_password).send_keys("Abcd$123456")
+    def enter_new_password(self, new_password):
+        self.find_element(field_password).send_keys(new_password)
 
     def enter_next(self):
         self.find_element(enter_button).click()

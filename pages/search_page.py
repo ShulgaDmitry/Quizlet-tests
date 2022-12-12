@@ -30,14 +30,14 @@ class SearchPage(AuthorizationPage):
     def open_search_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
 
-    def check_search(self):
+    def check_search(self, search_phrase):
         WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
-        search.send_keys("English")
+        search.send_keys(search_phrase)
         search.send_keys(Keys.ENTER)
         self.find_element(learn_modul).click()
         names = self.find_elements(name_modul)
@@ -47,10 +47,10 @@ class SearchPage(AuthorizationPage):
         for each_name in list_name:
             assert "English" or "ENGLISH" in each_name
 
-    def check_filter(self):
+    def check_filter(self, search_phrase):
         WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
-        search.send_keys("English")
+        search.send_keys(search_phrase)
         search.send_keys(Keys.ENTER)
         self.find_element(learn_modul).click()
         type_modul = self.find_element(select_image)
@@ -66,10 +66,10 @@ class SearchPage(AuthorizationPage):
                 count += 1
         return count == 8
 
-    def additions_other_modul(self):
+    def additions_other_modul(self, search_phrase, folder_name):
         WebDriverWait(self.chrome_driver, 5).until(EC.url_to_be("https://quizlet.com/latest"))
         search = self.find_element(field_search)
-        search.send_keys("English")
+        search.send_keys(search_phrase)
         search.send_keys(Keys.ENTER)
         self.find_element(learn_modul).click()
         modul = self.find_elements(modul_card)
@@ -77,7 +77,7 @@ class SearchPage(AuthorizationPage):
         self.find_element(add_button).click()
         self.find_element(choose_folder).click()
         self.find_element(click_create_folder).click()
-        self.find_element(name_field).send_keys("Test")
+        self.find_element(name_field).send_keys(folder_name)
         self.find_element(create_button).click()
         card = self.find_element(modul_card_folder)
         return card.is_enabled()

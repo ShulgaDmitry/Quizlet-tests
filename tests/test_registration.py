@@ -17,9 +17,9 @@ def test_registration_button(chrome_driver):
     with allure.step("Enter name"):
         registration.enter_new_name()
     with allure.step("Enter password"):
-        registration.enter_new_password()
+        registration.enter_new_password(password="Abcd123456")
     with allure.step("Enter email"):
-        registration.enter_new_email()
+        registration.enter_new_email(email="aapbyw@mailto.plus")
     with allure.step("Choose checkbox agreement"):
         registration.checkbox_true()
     with allure.step("Check that button is enabled"):
@@ -65,9 +65,9 @@ def test_registration(chrome_driver):
     with allure.step("Enter name"):
         registration.enter_new_name()
     with allure.step("Enter password"):
-        registration.enter_new_password()
+        registration.enter_new_password(password="Abcd123456")
     with allure.step("Enter email"):
-        registration.enter_new_email()
+        registration.enter_new_email(email="aapbyw@mailto.plus")
     with allure.step("Choose checkbox agreement"):
         registration.checkbox_true()
     with allure.step("Enter button registration"):
@@ -94,9 +94,9 @@ def test_delete_account(chrome_driver):
     with allure.step("Enter name"):
         registration.enter_new_name()
     with allure.step("Enter password"):
-        registration.enter_new_password()
+        registration.enter_new_password(password="Abcd123456")
     with allure.step("Enter email"):
-        registration.enter_new_email()
+        registration.enter_new_email(email="aapbyw@mailto.plus")
     with allure.step("Choose checkbox agreement"):
         registration.checkbox_true()
     with allure.step("Enter button registration"):

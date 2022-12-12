@@ -26,8 +26,8 @@ class SettingPage(AuthorizationPage):
     def open_setting_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
         try:
             self.find_element(error_password).is_enabled()
@@ -35,7 +35,7 @@ class SettingPage(AuthorizationPage):
             authorization.click_setting()
         else:
             authorization.clear_password()
-            authorization.enter_new_password()
+            authorization.enter_new_password(new_password="Abcd$123456")
             authorization.enter_next()
             authorization.click_setting()
             self.find_element(field_old_password).send_keys("Abcd$123456")
@@ -50,8 +50,8 @@ class SettingPage(AuthorizationPage):
         authorization.log_out_account()
         WebDriverWait(self.chrome_driver, 5).until(EC.url_contains("https://quizlet.com/goodbye"))
         authorization.click_authorization_button()
-        authorization.enter_right_email()
-        authorization.enter_new_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_new_password(new_password="Abcd$123456")
         authorization.enter_next()
         authorization.click_setting()
 
@@ -87,10 +87,10 @@ class SettingPage(AuthorizationPage):
         message_change = self.find_element(message)
         return message_change.is_enabled()
 
-    def change_password(self):
-        self.find_element(field_old_password).send_keys("Abcd123456")
-        self.find_element(field_new_password).send_keys("Abcd$123456")
-        self.find_element(field_confirm_new_password).send_keys("Abcd$123456")
+    def change_password(self, old_password, new_password):
+        self.find_element(field_old_password).send_keys(old_password)
+        self.find_element(field_new_password).send_keys(new_password)
+        self.find_element(field_confirm_new_password).send_keys(new_password)
         change_password = self.find_elements(change_button)
         change_password[3].click()
         message_change = self.find_element(message)

@@ -23,8 +23,8 @@ class ExpertDecisionPage(AuthorizationPage):
     def open_solution_experts_page(self):
         authorization = AuthorizationPage(self.chrome_driver)
         authorization.open_authorization_page()
-        authorization.enter_right_email()
-        authorization.enter_right_password()
+        authorization.enter_right_email(right_email="ekocm@mailto.plus")
+        authorization.enter_right_password(right_password="Abcd123456")
         authorization.enter_next()
         authorization.click_solutions_experts()
 
@@ -37,9 +37,9 @@ class ExpertDecisionPage(AuthorizationPage):
         all_steps = self.find_element(all_steps_button)
         return all_steps.is_enabled()
 
-    def check_search_field(self):
+    def check_search_field(self, book):
         search = self.find_element(search_field)
-        search.send_keys("Advanced Engineering Mathematics")
+        search.send_keys(book)
         search.send_keys(Keys.ENTER)
         self.find_element(books).click()
         titles = self.find_elements(title_book)

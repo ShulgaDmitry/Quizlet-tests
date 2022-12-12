@@ -9,9 +9,9 @@ def test_creation_folder_button(chrome_driver):
     with allure.step("Create folder"):
         creation.open_creation_folder_page()
     with allure.step("Enter name folder"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description folder"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Check that button is enabled"):
         assert creation.check_create_button() is True
 
@@ -23,9 +23,9 @@ def test_delete_folder(chrome_driver):
     with allure.step("Create folder"):
         creation.open_creation_folder_page()
     with allure.step("Enter name folder"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description folder"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Click create button"):
         creation.click_create_button()
     with allure.step("Delete folder"):
@@ -41,9 +41,9 @@ def test_addition_modul(chrome_driver):
     with allure.step("Create folder"):
         creation.open_creation_folder_page()
     with allure.step("Enter name folder"):
-        creation.enter_name_field()
+        creation.enter_name_field(name="Test")
     with allure.step("Enter description folder"):
-        creation.enter_description_field()
+        creation.enter_description_field(description="Testing")
     with allure.step("Click create button"):
         creation.click_create_button()
     with allure.step("Addition modul"):

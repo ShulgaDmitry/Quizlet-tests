@@ -19,4 +19,4 @@ def test_search_field(chrome_driver):
     with allure.step("Open solution experts page"):
         decision.open_solution_experts_page()
     with allure.step("Check search"):
-        decision.check_search_field()
+        decision.check_search_field(book="Advanced Engineering Mathematics")
